@@ -7,12 +7,17 @@ const {
   updateTour,
   deleteTour,
   aliasTopTours,
+  getTourStats,
 } = tourController;
 
 const router = express.Router();
 
 // Making aliaases for some route like 5 best and cheap tours
 router.route('/top-5-cheap').get(aliasTopTours, getAllTours);
+
+//aggreate pipeline
+router.route('/tour-stats').get(getTourStats);
+router.route('/monthly-plan/:year').get(tourController.getmonthlyPlan);
 
 //mounting param middleware
 // router.param('id', checkId);
@@ -24,6 +29,7 @@ router.route('/top-5-cheap').get(aliasTopTours, getAllTours);
 //Created in controller file
 
 // Defining routes with their respective controller functions
+
 router.route('/').get(getAllTours).post(createTour);
 router.route('/:id').get(getTourById).patch(updateTour).delete(deleteTour);
 module.exports = router;
