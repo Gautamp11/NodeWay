@@ -1,23 +1,16 @@
 const express = require('express');
-const fs = require('fs');
+const tourRouter = require('./routes/tourRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`, 'utf8')
-);
+//middleware -> parsing incoming json data to http request format
+app.use(express.json());
 
-app.get('/api/v1/tours', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tours: tours,
-    },
-  });
-});
+// now we are separatiing everything to different files, so we have to create router and middlewares
 
-const port = 3000;
+//mount the routers
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
 
-app.listen(port, () => {
-  console.log(`App is running on port ${port}`);
-});
+module.exports = app;
